@@ -10,6 +10,7 @@ function App() {
     const [chessboardSize, setChessboardSize] = useState('BasicBoard');
     const [selectedBoard, setSelectedBoard] = useState('BasicBoard');
 
+    // handle resizing the app window
     useEffect(() => {
         function handleResize() {
             const display = document.getElementsByClassName('container')[0];
@@ -21,6 +22,7 @@ function App() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // enables switching between boards using the buttons defined later
     function getSelectedBoard() {
         switch(selectedBoard) {
             case 'BasicBoard':
@@ -42,7 +44,7 @@ function App() {
         }
     }
 
-
+    // provides the html for the page, displays a board depending on the selected button
     return (
         <div className="container">
             <h1>Blunder Dodger</h1>
