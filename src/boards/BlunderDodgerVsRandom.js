@@ -48,11 +48,9 @@ export default function BlunderDodgerVsRandom({ boardWidth }) {
         console.log("making move... ")
         axios.post('http://127.0.0.1:5000/blunder_dodger_move', { fen: game.fen() }).then(
             (response) => {
-                const dt = response.data
-                console.log("test")
-                console.log(dt.valueOf().Result)
+                console.log(response.data.valueOf().Result)
                 safeGameMutate((game) => {
-                    game.move(dt.valueOf().Result, { sloppy: true });
+                    game.move(response.data.valueOf().Result, { sloppy: true });
                 });
                 const timeout = setTimeout(makeRandomMove(), 300)
                 setLatestTimeout(timeout)
