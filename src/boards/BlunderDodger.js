@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react';
 import Chess from '../../node_modules/chess.js/chess';
+import axios from 'axios';
 
 import { Chessboard } from 'react-chessboard';
 
-export default function PlayVsRandom({ boardWidth }) {
+export default function BlunderDodger({ boardWidth }) {
     const chessboardRef = useRef();
     const [game, setGame] = useState(new Chess());
     const [arrows, setArrows] = useState([]);
@@ -12,22 +13,32 @@ export default function PlayVsRandom({ boardWidth }) {
     function safeGameMutate(modify) {
         setGame((g) => {
             const update = { ...g };
-
             modify(update);
             return update;
         });
     }
 
-    function makeRandomMove() {
+    // Makes a move as the engine
+    function makeBDMove() {
         const possibleMoves = game.moves();
 
         // exit if the game is over
         if (game.game_over() || game.in_draw() || possibleMoves.length === 0) return;
 
-        const randomIndex = Math.floor(Math.random() * possibleMoves.length);
-        safeGameMutate((game) => {
-            game.move(possibleMoves[randomIndex]);
-        });
+        console.log("making move... ")
+        axios.post('http://127.0.0.1:5000/blunder_dodger_move', { fen: game.fen() }).then(
+            (response) => {
+                const dt = response.data
+                console.log("test")
+                console.log(dt.valueOf().Result)
+                safeGameMutate((game) => {
+                    game.move(dt.valueOf().Result, { sloppy: true });
+                });
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
     }
 
     function onDrop(sourceSquare, targetSquare) {
@@ -42,14 +53,14 @@ export default function PlayVsRandom({ boardWidth }) {
         // illegal move
         if (move === null) return false;
 
-        setTimeout(makeRandomMove, 200);
+        setTimeout(makeBDMove, 200);
         return true;
     }
 
     return (
         <div>
             <Chessboard
-                id="PlayVsRandom"
+                id="BlunderDodger"
                 arePremovesAllowed={true}
                 animationDuration={200}
                 boardOrientation={boardOrientation}

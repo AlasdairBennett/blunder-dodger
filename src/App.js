@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 // import ReactDOM from 'react-dom';
 
 import BasicBoard from './boards/BasicBoard';
-import PlayVsRandom from "./boards/PlayVsRandom";
+import PlayVsRandom from './boards/PlayVsRandom';
+import BlunderDodger from './boards/BlunderDodger';
+import BlunderDodgerVsRandom from './boards/BlunderDodgerVsRandom';
 
 function App() {
-    const [chessboardSize, setChessboardSize] = useState('BasicBoard');
-    const [selectedBoard, setSelectedBoard] = useState('BasicBoard');
+    const [chessboardSize, setChessboardSize] = useState('BlunderDodger');
+    const [selectedBoard, setSelectedBoard] = useState('BlunderDodger');
 
     // handle resizing the app window
     useEffect(() => {
@@ -41,6 +43,22 @@ function App() {
                         <br />
                     </>
                 );
+            case 'BlunderDodger':
+                return (
+                    <>
+                        <h2>Blunder Dodger</h2>
+                        <BlunderDodger boardWidth={chessboardSize} />
+                        <br />
+                    </>
+                );
+            case 'BlunderDodgerVsRandom':
+                return (
+                    <>
+                        <h2>Blunder Dodger vs Random</h2>
+                        <BlunderDodgerVsRandom boardWidth={chessboardSize} />
+                        <br />
+                    </>
+                );
         }
     }
 
@@ -67,6 +85,24 @@ function App() {
                     }}
                 >
                     Play Vs Random
+                </button>
+                <button
+                    className={`rc-button ${selectedBoard === 'BlunderDodger' ? 'selected' : ''}`}
+                    onClick={() => {
+                        setSelectedBoard(null);
+                        setTimeout(() => setSelectedBoard('BlunderDodger'), 10);
+                    }}
+                >
+                    Blunder Dodger
+                </button>
+                <button
+                    className={`rc-button ${selectedBoard === 'BlunderDodgerVsRandom' ? 'selected' : ''}`}
+                    onClick={() => {
+                        setSelectedBoard(null);
+                        setTimeout(() => setSelectedBoard('BlunderDodgerVsRandom'), 10);
+                    }}
+                >
+                    Blunder Dodger Vs Random
                 </button>
             </div>
             {getSelectedBoard()}
