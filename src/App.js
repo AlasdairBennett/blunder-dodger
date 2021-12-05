@@ -1,7 +1,5 @@
 import './App.css';
 import { useEffect, useState } from "react";
-// import { Chessboard } from 'react-chessboard';
-// import ReactDOM from 'react-dom';
 
 import PlayVsRandom from './boards/PlayVsRandom';
 import BlunderDodger from './boards/BlunderDodger';
